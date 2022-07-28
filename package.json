@@ -1,0 +1,16 @@
+{
+  "name": "@erkenes/simple-collapse",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc -p tsconfig.json"
+  },
+  "keywords": [],
+  "author": "Enes Erk <support@eneserk.de>",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  }
+}
