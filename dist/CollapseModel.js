@@ -5,13 +5,16 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _CollapseModel_init;
 class CollapseModel {
-    constructor(triggerElement, classNameTrigger = 'collapse-trigger', classNameWrapper = 'collapse-item-wrapper', classNameItemCollapsed = 'collapse-item-collapsed', classNameParentCollapsed = 'collapse-child-item-collapsed', targetSelector = null, withinParent = null, changeParentClass = null, groupSelector = null, groupId = null) {
+    constructor(triggerElement, classNameTrigger = 'collapse-trigger', classNameWrapper = 'collapse-item-wrapper', classNameItemCollapsed = 'collapse-item-collapsed', classNameParentCollapsed = 'collapse-child-item-collapsed', targetSelector = null, withinParent = null, changeParentClass = null, groupSelector = null, groupId = null, externalCommonParent = null, externalTarget = null, externalTargetWrapper = null) {
         var _a, _b, _c;
         this.classNameTrigger = 'collapse-trigger';
         this.classNameItemCollapsed = 'collapse-item-collapsed';
         this.classNameParentCollapsed = 'collapse-child-item-collapsed';
         this.classNameWrapper = 'collapse-item-wrapper';
         this.withinParent = false;
+        this.externalTarget = null;
+        this.externalTargetWrapper = null;
+        this.externalCommonParent = null;
         this.changeParentClass = false;
         this.groupSelector = null;
         this.groupId = null;
@@ -22,6 +25,10 @@ class CollapseModel {
         this.open = () => {
             this.target.style.height = this.wrapper.clientHeight + 'px';
             this.target.classList.remove(this.classNameItemCollapsed);
+            if (this.externalTarget && this.externalTargetWrapper) {
+                this.externalTarget.style.height = this.externalTargetWrapper.clientHeight + 'px';
+                this.externalTarget.classList.remove(this.classNameItemCollapsed);
+            }
             if (this.withinParent && this.changeParentClass) {
                 this.parent.classList.remove(this.classNameParentCollapsed);
             }
@@ -32,6 +39,10 @@ class CollapseModel {
         this.close = () => {
             this.target.style.height = '0';
             this.target.classList.add(this.classNameItemCollapsed);
+            if (this.externalTarget && this.externalTargetWrapper) {
+                this.externalTarget.style.height = '0';
+                this.externalTarget.classList.add(this.classNameItemCollapsed);
+            }
             if (this.withinParent && this.changeParentClass) {
                 this.parent.classList.add(this.classNameParentCollapsed);
             }
@@ -118,6 +129,51 @@ class CollapseModel {
             return document.documentElement;
         };
         /**
+         * Get the external common parent if set
+         *
+         * @param{HTMLElement|null} externalCommonParent
+         */
+        this.getExternalCommonParent = (externalCommonParent) => {
+            var _a, _b;
+            if (!externalCommonParent) {
+                const dataExternalCommonParent = (_a = this.trigger.dataset[CollapseModel.dataExternalCommonParent]) !== null && _a !== void 0 ? _a : '';
+                if (dataExternalCommonParent !== '') {
+                    return (_b = this.target.closest(dataExternalCommonParent)) !== null && _b !== void 0 ? _b : null;
+                }
+            }
+            return null;
+        };
+        /**
+         * Get the external target if set
+         *
+         * @param{HTMLElement|null} externalTarget
+         */
+        this.getExternalTarget = (externalTarget) => {
+            var _a, _b;
+            if (!externalTarget) {
+                const dataExternalTarget = (_a = this.trigger.dataset[CollapseModel.dataExternalTarget]) !== null && _a !== void 0 ? _a : '';
+                if (dataExternalTarget !== '' && this.externalCommonParent) {
+                    return (_b = this.externalCommonParent.querySelector(dataExternalTarget)) !== null && _b !== void 0 ? _b : null;
+                }
+            }
+            return null;
+        };
+        /**
+         * Get the external target wrapper if set
+         *
+         * @param{HTMLElement|null} externalTargetWrapper
+         */
+        this.getExternalTargetWrapper = (externalTargetWrapper) => {
+            var _a, _b;
+            if (!externalTargetWrapper) {
+                const dataExternalTargetWrapper = (_a = this.trigger.dataset[CollapseModel.dataExternalTargetWrapper]) !== null && _a !== void 0 ? _a : '';
+                if (dataExternalTargetWrapper !== '' && this.externalTarget) {
+                    return (_b = this.externalTarget.querySelector(dataExternalTargetWrapper)) !== null && _b !== void 0 ? _b : null;
+                }
+            }
+            return null;
+        };
+        /**
          * returns all triggers that are of the same group
          *
          * @param skipCurrentTrigger skip this element/target mapped by the trigger
@@ -195,6 +251,17 @@ class CollapseModel {
         this.wrapper = this.getWrapper();
         this.guid = this.pseudoGuid();
         this.trigger.dataset.collapseItemGuid = this.guid;
+        this.externalCommonParent = this.getExternalCommonParent(externalCommonParent);
+        if (this.externalCommonParent) {
+            this.externalTarget = this.getExternalTarget(externalTarget);
+            this.externalTargetWrapper = this.getExternalTargetWrapper(externalTargetWrapper);
+            if (!this.externalTarget) {
+                throw new Error('The external-common-parent is set, but not external-target!');
+            }
+            if (!this.externalTargetWrapper) {
+                throw new Error('The external-common-parent is set, but not external-target-wrapper!');
+            }
+        }
         __classPrivateFieldGet(this, _CollapseModel_init, "f").call(this);
         if (!window.hasOwnProperty('CollapseElements')) {
             window.CollapseElements = [];
@@ -212,6 +279,9 @@ CollapseModel.dataWithinParent = 'collapseTargetIsBrother';
 CollapseModel.dataChangeParentClass = 'collapseChangeParentClass';
 CollapseModel.dataGroupSelector = 'collapseGroupSelector';
 CollapseModel.dataGroupId = 'collapseGroupId';
+CollapseModel.dataExternalTarget = 'collapseExternalTarget';
+CollapseModel.dataExternalCommonParent = 'collapseExternalCommonParent';
+CollapseModel.dataExternalTargetWrapper = 'collapseExternalTargetWrapper';
 CollapseModel.classNameTrigger = 'collapse-trigger';
 CollapseModel.classNameItemCollapsed = 'collapse-item-collapsed';
 CollapseModel.classNameParentCollapsed = 'collapse-child-item-collapsed';

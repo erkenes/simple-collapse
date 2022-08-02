@@ -10,6 +10,9 @@ declare class CollapseModel {
     static readonly dataChangeParentClass: string;
     static readonly dataGroupSelector: string;
     static readonly dataGroupId: string;
+    static readonly dataExternalTarget: string;
+    static readonly dataExternalCommonParent: string;
+    static readonly dataExternalTargetWrapper: string;
     static readonly classNameTrigger: string;
     static readonly classNameItemCollapsed: string;
     static readonly classNameParentCollapsed: string;
@@ -24,11 +27,14 @@ declare class CollapseModel {
     readonly wrapper: HTMLElement;
     readonly targetSelector: string;
     readonly withinParent: boolean;
+    readonly externalTarget: HTMLElement | null;
+    readonly externalTargetWrapper: HTMLElement | null;
+    readonly externalCommonParent: HTMLElement | null;
     readonly changeParentClass: boolean;
     readonly groupSelector: string | null;
     readonly groupId: string | null;
     readonly guid: string;
-    constructor(triggerElement: HTMLElement, classNameTrigger?: string, classNameWrapper?: string, classNameItemCollapsed?: string, classNameParentCollapsed?: string, targetSelector?: string | null, withinParent?: boolean | null, changeParentClass?: boolean | null, groupSelector?: string | null, groupId?: string | null);
+    constructor(triggerElement: HTMLElement, classNameTrigger?: string, classNameWrapper?: string, classNameItemCollapsed?: string, classNameParentCollapsed?: string, targetSelector?: string | null, withinParent?: boolean | null, changeParentClass?: boolean | null, groupSelector?: string | null, groupId?: string | null, externalCommonParent?: HTMLElement | null, externalTarget?: HTMLElement | null, externalTargetWrapper?: HTMLElement | null);
     /**
      * Expand target
      */
@@ -66,6 +72,24 @@ declare class CollapseModel {
      * @private
      */
     private getParent;
+    /**
+     * Get the external common parent if set
+     *
+     * @param{HTMLElement|null} externalCommonParent
+     */
+    private getExternalCommonParent;
+    /**
+     * Get the external target if set
+     *
+     * @param{HTMLElement|null} externalTarget
+     */
+    private getExternalTarget;
+    /**
+     * Get the external target wrapper if set
+     *
+     * @param{HTMLElement|null} externalTargetWrapper
+     */
+    private getExternalTargetWrapper;
     /**
      * returns all triggers that are of the same group
      *
