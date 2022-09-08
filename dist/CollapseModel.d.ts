@@ -4,7 +4,6 @@ declare global {
     }
 }
 declare class CollapseModel {
-    #private;
     static readonly dataTargetSelector: string;
     static readonly dataWithinParent: string;
     static readonly dataChangeParentClass: string;
@@ -13,6 +12,7 @@ declare class CollapseModel {
     static readonly dataExternalTarget: string;
     static readonly dataExternalCommonParent: string;
     static readonly dataExternalTargetWrapper: string;
+    static readonly dataOpenOnInit: string;
     static readonly classNameTrigger: string;
     static readonly classNameItemCollapsed: string;
     static readonly classNameParentCollapsed: string;
@@ -30,11 +30,12 @@ declare class CollapseModel {
     readonly externalTarget: HTMLElement | null;
     readonly externalTargetWrapper: HTMLElement | null;
     readonly externalCommonParent: HTMLElement | null;
+    readonly openOnInit: boolean;
     readonly changeParentClass: boolean;
     readonly groupSelector: string | null;
     readonly groupId: string | null;
     readonly guid: string;
-    constructor(triggerElement: HTMLElement, classNameTrigger?: string, classNameWrapper?: string, classNameItemCollapsed?: string, classNameParentCollapsed?: string, targetSelector?: string | null, withinParent?: boolean | null, changeParentClass?: boolean | null, groupSelector?: string | null, groupId?: string | null, externalCommonParent?: HTMLElement | null, externalTarget?: HTMLElement | null, externalTargetWrapper?: HTMLElement | null);
+    constructor(triggerElement: HTMLElement, classNameTrigger?: string, classNameWrapper?: string, classNameItemCollapsed?: string, classNameParentCollapsed?: string, targetSelector?: string | null, withinParent?: boolean | null, changeParentClass?: boolean | null, groupSelector?: string | null, groupId?: string | null, externalCommonParent?: HTMLElement | null, externalTarget?: HTMLElement | null, externalTargetWrapper?: HTMLElement | null, openOnInit?: boolean | null);
     /**
      * Expand target
      */
@@ -101,6 +102,12 @@ declare class CollapseModel {
      * Generate a pseudo guid
      */
     private pseudoGuid;
+    /**
+     * Initialize the classes
+     *
+     * @private
+     */
+    private initialize;
     /**
      * Initialize all collapse elements matching to the given selector
      *

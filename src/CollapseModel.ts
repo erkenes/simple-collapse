@@ -12,6 +12,7 @@ class CollapseModel
     static readonly dataExternalTarget: string = 'collapseExternalTarget';
     static readonly dataExternalCommonParent: string = 'collapseExternalCommonParent';
     static readonly dataExternalTargetWrapper: string = 'collapseExternalTargetWrapper';
+    static readonly dataOpenOnInit: string = 'collapseOpenInit';
     static readonly classNameTrigger: string = 'collapse-trigger';
     static readonly classNameItemCollapsed: string = 'collapse-item-collapsed';
     static readonly classNameParentCollapsed: string = 'collapse-child-item-collapsed';
@@ -31,6 +32,7 @@ class CollapseModel
     public readonly externalTarget: HTMLElement|null = null;
     public readonly externalTargetWrapper: HTMLElement|null = null;
     public readonly externalCommonParent: HTMLElement|null = null;
+    public readonly openOnInit: boolean = false;
     public readonly changeParentClass: boolean = false;
     public readonly groupSelector: string|null = null;
     public readonly groupId: string|null = null;
@@ -49,7 +51,8 @@ class CollapseModel
         groupId: string|null = null,
         externalCommonParent: HTMLElement|null = null,
         externalTarget: HTMLElement|null = null,
-        externalTargetWrapper: HTMLElement|null = null
+        externalTargetWrapper: HTMLElement|null = null,
+        openOnInit: boolean|null = null
     ) {
         if (!triggerElement) {
             throw new Error('No trigger was set');
@@ -75,6 +78,7 @@ class CollapseModel
         this.wrapper = this.getWrapper();
         this.guid = this.pseudoGuid();
         this.trigger.dataset.collapseItemGuid = this.guid;
+        this.openOnInit = openOnInit ?? triggerElement.dataset[CollapseModel.dataOpenOnInit] == "1";
 
         this.externalCommonParent = <HTMLElement|null>this.getExternalCommonParent(externalCommonParent);
         if (this.externalCommonParent) {
@@ -327,10 +331,11 @@ class CollapseModel
      * @private
      */
     private initialize = () => {
-        this.target.classList.add(this.classNameItemCollapsed);
-
-        if (this.withinParent && this.changeParentClass) {
-            this.parent.classList.add(this.classNameParentCollapsed);
+        if (this.openOnInit) {
+            this.open();
+        }
+        else {
+            this.close();
         }
     }
 
