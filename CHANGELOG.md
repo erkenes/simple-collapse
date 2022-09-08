@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/erkenes/simple-collapse/compare/0.1.0...0.2.0) (2022-09-08)
+
+
+### Features
+
+* add `openOnInit` property ([6a9aa58](https://github.com/erkenes/simple-collapse/commit/6a9aa584485abb84fbff83eff7169990335c391e))
+
 ## [0.1.0](https://github.com/erkenes/simple-collapse/compare/v0.0.1...0.1.0) (2022-08-02)
 
 
