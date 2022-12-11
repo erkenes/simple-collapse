@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/erkenes/simple-collapse/compare/0.2.0...0.3.0) (2022-12-11)
+
+
+### Features
+
+* Create FUNDING.yml ([4a668c2](https://github.com/erkenes/simple-collapse/commit/4a668c294d1f081a765e56bcfc6dee1f8be819dc))
+
 ## [0.2.0](https://github.com/erkenes/simple-collapse/compare/0.1.0...0.2.0) (2022-09-08)
 
 
